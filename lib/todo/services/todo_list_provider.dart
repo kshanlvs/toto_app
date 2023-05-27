@@ -40,6 +40,31 @@ class TodoListCrudProvider extends ChangeNotifier {
     return true;
   }
 
+  int completedCount = 0;
+  int pendingCount = 0;
+  bool isLoading=false;
+
+  Future<int> getCompletedTaskCount(String email) async {
+
+  isLoading = true;
+    final QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('todo_list')
+        .where('email', isEqualTo: email)
+        .where('task_completed', isEqualTo: true)
+        .get();
+    final QuerySnapshot pendingSnapShot = await FirebaseFirestore.instance
+        .collection('todo_list')
+        .where('email', isEqualTo: email)
+        .where('task_completed', isEqualTo: false)
+        .get();
+    completedCount = snapshot.docs.length;
+    pendingCount = pendingSnapShot.docs.length;
+    isLoading = false;
+    notifyListeners();
+    int count = snapshot.docs.length;
+    return count;
+  }
+
   Future editTask(String taskId,
       {required String title,
       required String desc,
@@ -62,17 +87,15 @@ class TodoListCrudProvider extends ChangeNotifier {
     }).catchError((error) {});
   }
 
-  void updateTaskCompleted(bool val,String taskId) {
-     db
+  void updateTaskCompleted(bool val, String taskId) {
+    db
         .collection("todo_list")
         .where("task_id", isEqualTo: taskId)
         .get()
         .then((QuerySnapshot<Map<String, dynamic>> querySnapshot) {
       for (var doc in querySnapshot.docs) {
         doc.reference
-            .update({
-              "task_completed":val
-            })
+            .update({"task_completed": val})
             .then((_) {})
             .catchError((error) {});
       }

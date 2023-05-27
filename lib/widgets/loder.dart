@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toto_app/color_constants.dart';
 
 class OrangeLoaderOverlay {
   static OverlayEntry? _overlayEntry;
@@ -25,7 +26,7 @@ class OrangeLoaderOverlay {
 class OrangeLoader extends StatelessWidget {
   final double size;
   final Color color;
-  const OrangeLoader({Key? key, this.size = 40.0, this.color = Colors.orange})
+  const OrangeLoader({Key? key, this.size = 40.0, this.color = primaryColor})
       : super(key: key);
   @override
   Widget build(BuildContext context) {

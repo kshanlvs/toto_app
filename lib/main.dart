@@ -1,8 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:toto_app/auth/services/google_sign_in_provider.dart';
+import 'package:toto_app/color_constants.dart';
 import 'package:toto_app/firebase_options.dart';
 
 import 'auth/screens/login_page.dart';
@@ -10,17 +12,17 @@ import 'auth/screens/login_page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp( MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-   MyApp({super.key});
+  MyApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final MaterialColor myCustomColor = MaterialColor(
-      0xFFE65100, // Replace with your desired color value
+    MaterialColor myCustomColor = MaterialColor(
+      0xFFc56358, // Replace with your desired color value
       <int, Color>{
         50: Color(0xFFFFF3E0),
         100: Color(0xFFFFE0B2),
@@ -41,6 +43,10 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: ThemeData(
+            inputDecorationTheme: const InputDecorationTheme(
+                labelStyle: TextStyle(
+                    color: Colors.grey, fontWeight: FontWeight.normal)),
+            iconTheme: const IconThemeData(color: primaryColor),
             primarySwatch: myCustomColor,
           ),
           home: ChangeNotifierProvider(
